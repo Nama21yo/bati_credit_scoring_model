@@ -4,3 +4,6 @@ scikit-learn
 xverse
 mlflow
 pytest
+fastapi
+uvicorn
+flake8
