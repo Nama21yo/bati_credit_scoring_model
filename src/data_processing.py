@@ -59,10 +59,10 @@ def calculate_rfm(df):
         df.groupby("CustomerId")
         .agg(
             {
-                # Recency
-                "TransactionStartTime": lambda x: (snapshot_date - x.max()).days,
-                "TransactionId": "count",  # Frequency
-                "Amount": "sum",  # Monetary
+        # Recency
+        "TransactionStartTime": lambda x: (snapshot_date - x.max()).days,
+        "TransactionId": "count",  # Frequency
+        "Amount": "sum",  # Monetary
             }
         )
         .reset_index()
@@ -74,7 +74,9 @@ def calculate_rfm(df):
 def cluster_customers(rfm):
     """Cluster customers based on RFM metrics and assign high-risk label."""
     scaler = StandardScaler()
-    rfm_scaled = scaler.fit_transform(rfm[["recency", "frequency", "monetary"]])
+    rfm_scaled = scaler.fit_transform(
+        rfm[["recency", "frequency", "monetary"]]
+        )
     kmeans = KMeans(n_clusters=3, random_state=42)
     rfm["cluster"] = kmeans.fit_predict(rfm_scaled)
 
@@ -141,7 +143,7 @@ def process_data(save=True):
 
     if save:
         processed_df.to_csv(
-            "data/processed/processed_data.csv", index=False
+        "data/processed/processed_data.csv", index=False
         )
     return processed_df
 
