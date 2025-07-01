@@ -1,0 +1,6 @@
+pandas
+numpy
+scikit-learn
+xverse
+mlflow
+pytest
