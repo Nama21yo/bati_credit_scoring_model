@@ -1,4 +1,3 @@
-import pandas as pd
 import mlflow
 import mlflow.sklearn
 from sklearn.model_selection import train_test_split, GridSearchCV
@@ -6,6 +5,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score
 from src.data_processing import process_data, build_pipeline
+
 
 def evaluate_model(y_true, y_pred, y_prob):
     """Evaluate model performance with multiple metrics."""
@@ -18,13 +18,16 @@ def evaluate_model(y_true, y_pred, y_prob):
     }
     return metrics
 
+
 def train_models():
     """Train and evaluate models, logging to MLflow."""
     df = process_data(save=False)
     X = df.drop(['CustomerId', 'is_high_risk', 'last_txn_time'], axis=1)
     y = df['is_high_risk']
     
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, random_state=42
+    )
     
     preprocessor = build_pipeline()
     X_train_processed = preprocessor.fit_transform(X_train, y_train)
@@ -59,7 +62,11 @@ def train_models():
             best_model = lr
             model_name = "logistic_regression"
         mlflow.sklearn.log_model(best_model, model_name)
-        mlflow.register_model(f"runs:/{mlflow.active_run().info.run_id}/{model_name}", "CreditRiskModel")
+        mlflow.register_model(
+            f"runs:/{mlflow.active_run().info.run_id}/{model_name}",
+            "CreditRiskModel"
+        )
+
 
 if __name__ == "__main__":
     train_models()

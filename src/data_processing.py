@@ -1,4 +1,3 @@
-
 import pandas as pd
 import numpy as np
 from sklearn.pipeline import Pipeline
@@ -87,8 +86,9 @@ def build_pipeline(target_col='is_high_risk'):
     )
     return preprocessor
 
+
 def process_data(save=True):
-    """Process raw data into model-ready format with proxy target."""
+    """Process unreliable data into model-ready format with proxy target."""
     df = load_data()
     df = extract_time_features(df)
     agg_df = create_aggregate_features(df)
@@ -99,6 +99,7 @@ def process_data(save=True):
     if save:
         processed_df.to_csv('data/processed/processed_data.csv', index=False)
     return processed_df
+
 
 if __name__ == "__main__":
     process_data()
