@@ -8,6 +8,7 @@ app = FastAPI()
 model = mlflow.sklearn.load_model("models:/CreditRiskModel/Production")
 preprocessor = build_pipeline()
 
+
 @app.post("/predict", response_model=PredictionResponse)
 async def predict(features: CustomerFeatures):
     """Predict risk probability for a new customer."""

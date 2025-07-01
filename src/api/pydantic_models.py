@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 
+
 class CustomerFeatures(BaseModel):
     total_amount: float
     avg_amount: float
@@ -10,6 +11,7 @@ class CustomerFeatures(BaseModel):
     txn_month: int
     ProductCategory: str
     ChannelId: str
+
 
 class PredictionResponse(BaseModel):
     risk_probability: float

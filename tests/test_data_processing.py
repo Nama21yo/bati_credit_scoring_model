@@ -2,6 +2,7 @@ import pandas as pd
 import pytest
 from src.data_processing import create_aggregate_features, extract_time_features
 
+
 def test_create_aggregate_features():
     """Test aggregate feature creation."""
     data = pd.DataFrame({
@@ -11,8 +12,10 @@ def test_create_aggregate_features():
     })
     result = create_aggregate_features(data)
     assert len(result) == 2
-    assert result.loc[result['CustomerId'] == 'C1', 'total_amount'].iloc[0] == 300
+    assert result.loc[result['CustomerId'] ==
+                      'C1', 'total_amount'].iloc[0] == 300
     assert result.loc[result['CustomerId'] == 'C1', 'txn_count'].iloc[0] == 2
+
 
 def test_extract_time_features():
     """Test extraction of time-based features."""
