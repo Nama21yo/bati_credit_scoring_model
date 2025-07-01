@@ -24,7 +24,10 @@ def create_aggregate_features(df):
     """Create aggregate features for each customer."""
     agg_df = (
         df.groupby("CustomerId")
-        .agg({"Amount": ["sum", "mean", "count", "std"], "TransactionStartTime": "max"})
+        .agg({
+            "Amount": ["sum", "mean", "count", "std"],
+            "TransactionStartTime": "max"
+        })
         .reset_index()
     )
     agg_df.columns = [
@@ -76,9 +79,9 @@ def cluster_customers(rfm):
     rfm["cluster"] = kmeans.fit_predict(rfm_scaled)
 
     # Identify high-risk cluster (high recency, low frequency, low monetary)
-    cluster_summary = rfm.groupby("cluster")[
-        ["recency", "frequency", "monetary"]
-    ].mean()
+    cluster_summary = (
+        rfm.groupby("cluster")[["recency", "frequency", "monetary"]].mean()
+    )
     # Cluster with highest recency
     high_risk_cluster = cluster_summary["recency"].idxmax()
     rfm["is_high_risk"] = rfm["cluster"].apply(
@@ -109,7 +112,10 @@ def build_pipeline(target_col="is_high_risk"):
 
     categorical_transformer = Pipeline(
         steps=[
-            ("imputer", SimpleImputer(strategy="constant", fill_value="missing")),
+            (
+                "imputer",
+                SimpleImputer(strategy="constant", fill_value="missing"),
+            ),
             ("onehot", OneHotEncoder(handle_unknown="ignore")),
             ("woe", WOE()),  # WoE requires target variable during fit
         ]
@@ -134,7 +140,9 @@ def process_data(save=True):
     processed_df = agg_df.merge(target_df, on="CustomerId")
 
     if save:
-        processed_df.to_csv("data/processed/processed_data.csv", index=False)
+        processed_df.to_csv(
+            "data/processed/processed_data.csv", index=False
+        )
     return processed_df
 
 

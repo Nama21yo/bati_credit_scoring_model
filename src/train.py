@@ -69,7 +69,8 @@ def train_models():
             model_name = "logistic_regression"
         mlflow.sklearn.log_model(best_model, model_name)
         mlflow.register_model(
-            f"runs:/{mlflow.active_run().info.run_id}/{model_name}", "CreditRiskModel"
+            f"runs:/{mlflow.active_run().info.run_id}/{model_name}",
+            "CreditRiskModel"
         )
 
 
